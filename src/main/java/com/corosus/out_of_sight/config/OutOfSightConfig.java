@@ -28,13 +28,25 @@ public class OutOfSightConfig {
 
         String category = "general";
         config.addCustomCategoryComment(category, "General mod settings");
-        tileEntityRenderRangeMax = config.getFloat("tileEntityRenderRangeMax", category, 24, 1, 30000, "The maximum range that a tile entity is rendered");
-        entityRenderRangeMax = config.getFloat("entityRenderRangeMax", category, 64, 1, 30000, "The maximum range that an entity is rendered");
-        particleRenderRangeMax = config.getFloat("particleRenderRangeMax", category, 24, 1, 30000, "The maximum range that a particle is rendered");
+        tileEntityRenderRangeMax = config.getFloat(
+            "tileEntityRenderRangeMax", category, 24, 1, 30000,
+            "The maximum range that a tile entity is rendered");
+        entityRenderRangeMax = config.getFloat(
+            "entityRenderRangeMax", category, 64, 1, 30000,
+            "The maximum range that an entity is rendered");
+        particleRenderRangeMax = config.getFloat(
+            "particleRenderRangeMax", category, 24, 1, 30000,
+            "The maximum range that a particle is rendered");
 
-        tileEntityRenderLimitModdedOnly = config.getBoolean("tileEntityRenderLimitModdedOnly", category, true, "Whether the tile entity render limit should be limited to modded");
-        entityRenderLimitModdedOnly = config.getBoolean("entityRenderLimitModdedOnly", category, true, "Whether the entity render limit should be limited to modded");
-        particleRenderLimitModdedOnly = config.getBoolean("particleRenderLimitModdedOnly", category, true, "Whether the particle render limit should be limited to modded");
+        tileEntityRenderLimitModdedOnly = config.getBoolean(
+            "tileEntityRenderLimitModdedOnly", category, true,
+            "Whether the tile entity render limit should be limited to modded");
+        entityRenderLimitModdedOnly = config.getBoolean(
+            "entityRenderLimitModdedOnly", category, true,
+            "Whether the entity render limit should be limited to modded");
+        particleRenderLimitModdedOnly = config.getBoolean(
+            "particleRenderLimitModdedOnly", category, true,
+            "Whether the particle render limit should be limited to modded");
 
         tileEntityRenderRangeMaxSq = tileEntityRenderRangeMax * tileEntityRenderRangeMax;
         entityRenderRangeMaxSq = entityRenderRangeMax * entityRenderRangeMax;
