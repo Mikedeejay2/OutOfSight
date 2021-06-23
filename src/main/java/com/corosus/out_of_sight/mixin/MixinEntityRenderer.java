@@ -29,7 +29,7 @@ public abstract class MixinEntityRenderer {
         double d1 = livingEntityIn.posY - y;
         double d2 = livingEntityIn.posZ - z;
         double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-        return !(d3 > OutOfSightConfig.entityRenderRangeMax * OutOfSightConfig.entityRenderRangeMax) ||
+        return !(d3 > OutOfSightConfig.entityRenderRangeMaxSq) ||
             (OutOfSightConfig.entityRenderLimitModdedOnly && OutOfSight.getCanonicalNameCached(livingEntityIn.getClass()).startsWith("net.minecraft"));
     }
 }

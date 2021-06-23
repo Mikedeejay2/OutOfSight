@@ -16,6 +16,9 @@ public class OutOfSightConfig {
     public static boolean tileEntityRenderLimitModdedOnly;
     public static boolean entityRenderLimitModdedOnly;
 
+    public static double tileEntityRenderRangeMaxSq;
+    public static double entityRenderRangeMaxSq;
+
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -26,6 +29,9 @@ public class OutOfSightConfig {
         entityRenderRangeMax = config.getFloat("entityRenderRangeMax", category, 64, 1, 30000, "The maximum range that an entity is rendered");
         tileEntityRenderLimitModdedOnly = config.getBoolean("tileEntityRenderLimitModdedOnly", category, true, "Whether the tile entity render limit should be limited to modded");
         entityRenderLimitModdedOnly = config.getBoolean("entityRenderLimitModdedOnly", category, true, "Whether the entity render limit should be limited to modded");
+
+        tileEntityRenderRangeMaxSq = tileEntityRenderRangeMax * tileEntityRenderRangeMax;
+        entityRenderRangeMaxSq = entityRenderRangeMax * entityRenderRangeMax;
 
         config.save();
     }

@@ -23,7 +23,7 @@ public abstract class MixinTileEntityRendererDispatcher {
     }
 
     public boolean isInRangeToRender3d(TileEntity tileEntityIn) {
-        return !(getDistanceSq(tileEntityIn) > OutOfSightConfig.tileEntityRenderRangeMax * OutOfSightConfig.tileEntityRenderRangeMax) ||
+        return !(getDistanceSq(tileEntityIn) > OutOfSightConfig.tileEntityRenderRangeMaxSq) ||
             (OutOfSightConfig.tileEntityRenderLimitModdedOnly && OutOfSight.getCanonicalNameCached(tileEntityIn.getClass()).startsWith("net.minecraft"));
     }
 
