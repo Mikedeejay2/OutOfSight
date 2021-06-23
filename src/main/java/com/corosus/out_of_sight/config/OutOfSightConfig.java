@@ -5,6 +5,7 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Config(modid = OutOfSight.MOD_ID, category = "", name = "Out Of Sight")
 public class OutOfSightConfig {
@@ -77,11 +78,19 @@ public class OutOfSightConfig {
         public double rangeMaxSQ = -1;
     }
 
+    public static void calcSquares() {
+        tileEntity.rangeMaxSQ = tileEntity.rangeMax * tileEntity.rangeMax;
+        entity.rangeMaxSQ = entity.rangeMax * entity.rangeMax;
+        particle.rangeMaxSQ = particle.rangeMax * particle.rangeMax;
+    }
+
     @Mod.EventBusSubscriber(modid = OutOfSight.MOD_ID)
     private static class EventHandler {
+        @SubscribeEvent
         public static void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
             if(event.getModID().equals(OutOfSight.MOD_ID)) {
                 ConfigManager.sync(OutOfSight.MOD_ID, Config.Type.INSTANCE);
+                calcSquares();
             }
         }
     }

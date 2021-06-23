@@ -34,12 +34,11 @@ public class OutOfSight
 
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
-        System.out.println("Test1: " + OutOfSightConfig.tileEntity.rangeMax);
+        OutOfSightConfig.calcSquares();
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        System.out.println("Test2: " + OutOfSightConfig.tileEntity.rangeMax);
     }
 
     public static String getCanonicalNameCached(Class<?> clazz) {
