@@ -31,8 +31,8 @@ public abstract class MixinParticleManager {
     }
 
     public boolean isInRangeToRender3d(Entity entityIn, double x, double y, double z) {
-        return !OutOfSightConfig.config.particle.enabled || getDistanceSq(entityIn, x, y, z) <= OutOfSightConfig.config.particle.rangeMaxSQ ||
-            (OutOfSightConfig.config.particle.moddedOnly && !OutOfSight.isModded(entityIn.getClass()));
+        return !OutOfSightConfig.particle.enabled || getDistanceSq(entityIn, x, y, z) <= OutOfSightConfig.particle.rangeMaxSQ ||
+            (OutOfSightConfig.particle.moddedOnly && !OutOfSight.isModded(entityIn.getClass()));
     }
 
     public double getDistanceSq(Entity livingEntityIn, double x, double y, double z) {

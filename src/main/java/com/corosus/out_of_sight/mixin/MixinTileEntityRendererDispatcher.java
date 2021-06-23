@@ -23,8 +23,8 @@ public abstract class MixinTileEntityRendererDispatcher {
     }
 
     public boolean isInRangeToRender3d(TileEntity tileEntityIn) {
-        return !OutOfSightConfig.config.tileEntity.enabled || getDistanceSq(tileEntityIn) <= OutOfSightConfig.config.tileEntity.rangeMaxSQ ||
-            (OutOfSightConfig.config.tileEntity.moddedOnly && !OutOfSight.isModded(tileEntityIn.getClass()));
+        return !OutOfSightConfig.tileEntity.enabled || getDistanceSq(tileEntityIn) <= OutOfSightConfig.tileEntity.rangeMaxSQ ||
+            (OutOfSightConfig.tileEntity.moddedOnly && !OutOfSight.isModded(tileEntityIn.getClass()));
     }
 
     public double getDistanceSq(TileEntity tileEntity) {
