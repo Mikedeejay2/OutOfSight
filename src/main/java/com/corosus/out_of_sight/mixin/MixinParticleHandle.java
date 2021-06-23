@@ -23,7 +23,7 @@ public abstract class MixinParticleHandle
     @Redirect(method = "spawnParticle0(IZZDDDDDD[I)Lnet/minecraft/client/particle/Particle;",
         at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/particle/ParticleManager;spawnEffectParticle(IDDDDDD[I)Lnet/minecraft/client/particle/Particle;"))
-    public Particle spawnParticleEffect(ParticleManager particleManager, int particleId, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int[] parameters) {
+    public Particle spawnEffectParticle(ParticleManager particleManager, int particleId, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int[] parameters) {
         Entity entity = mc.getRenderViewEntity();
         if(!isInRangeToRender3d(entity, xCoord, yCoord, zCoord)) {
             return null;
