@@ -66,7 +66,7 @@ public class OutOfSightConfig {
         @Config.Name("Particle Render Range Max")
         @Config.Comment("The maximum range that a particle is rendered")
         @Config.RangeDouble(min = 1, max = 30000)
-        public double rangeMax = 64;
+        public double rangeMax = 24;
 
         @Config.Name("Particle Render Limit Modded Only")
         @Config.Comment("Whether the particle render limit should be limited to modded")
