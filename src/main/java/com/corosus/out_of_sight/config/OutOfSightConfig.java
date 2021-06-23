@@ -73,15 +73,27 @@ public class OutOfSightConfig {
         @Config.Comment("Whether the particle render limit should be limited to modded")
         public boolean moddedOnly = true;
 
+        @Config.Name("Forced Particles Are Ignored")
+        @Config.Comment("Whether particle range is enabled")
+        public boolean forcedIgnored = true;
+
+        @Config.Name("Forced Particle Render Range Max")
+        @Config.Comment("The maximum range that a particle is rendered")
+        @Config.RangeDouble(min = 1, max = 30000)
+        public double forcedRangeMax = 64;
+
         // Internal
         @Config.Ignore
         public double rangeMaxSQ = -1;
+        @Config.Ignore
+        public double forcedRangeMaxSq = 64;
     }
 
     public static void calcSquares() {
         tileEntity.rangeMaxSQ = tileEntity.rangeMax * tileEntity.rangeMax;
         entity.rangeMaxSQ = entity.rangeMax * entity.rangeMax;
         particle.rangeMaxSQ = particle.rangeMax * particle.rangeMax;
+        particle.forcedRangeMaxSq = particle.forcedRangeMax * particle.forcedRangeMax;
     }
 
     @Mod.EventBusSubscriber(modid = OutOfSight.MOD_ID)
