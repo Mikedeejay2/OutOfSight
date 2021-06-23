@@ -6,7 +6,6 @@
   "client": [
     "MixinEntityRenderer",
     "MixinTileEntityRendererDispatcher",
-    "MixinParticleAccessor",
     "MixinParticleManager"
   ],
   "injectors": {
