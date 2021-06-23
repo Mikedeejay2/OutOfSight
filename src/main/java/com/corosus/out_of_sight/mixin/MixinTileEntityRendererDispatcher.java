@@ -16,19 +16,21 @@ public abstract class MixinTileEntityRendererDispatcher {
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher;render(Lnet/minecraft/tileentity/TileEntity;FI)V"))
     public void renderTileEntity(TileEntityRendererDispatcher dispatcher, TileEntity tileEntityIn, float partialTicks, int destroyStage) {
-        double dist = getDistanceSq(tileEntityIn, TileEntityRendererDispatcher.staticPlayerX, TileEntityRendererDispatcher.staticPlayerY, TileEntityRendererDispatcher.staticPlayerZ);
-        if (dist > OutOfSightConfig.tileEntityRenderRangeMax * OutOfSightConfig.tileEntityRenderRangeMax) {
-            if (!OutOfSightConfig.tileEntityRenderLimitModdedOnly || !OutOfSight.getCanonicalNameCached(tileEntityIn.getClass()).startsWith("net.minecraft")) {
-                return;
-            }
+        if(!isInRangeToRender3d(tileEntityIn)) {
+            return;
         }
         dispatcher.render(tileEntityIn, partialTicks, destroyStage);
     }
 
-    public double getDistanceSq(TileEntity tileEntity, double x, double y, double z) {
-        double d0 = (double)tileEntity.getPos().getX() + 0.5D - x;
-        double d1 = (double)tileEntity.getPos().getY() + 0.5D - y;
-        double d2 = (double)tileEntity.getPos().getZ() + 0.5D - z;
+    public boolean isInRangeToRender3d(TileEntity tileEntityIn) {
+        return !(getDistanceSq(tileEntityIn) > OutOfSightConfig.tileEntityRenderRangeMax * OutOfSightConfig.tileEntityRenderRangeMax) ||
+            (OutOfSightConfig.tileEntityRenderLimitModdedOnly && OutOfSight.getCanonicalNameCached(tileEntityIn.getClass()).startsWith("net.minecraft"));
+    }
+
+    public double getDistanceSq(TileEntity tileEntity) {
+        double d0 = (double)tileEntity.getPos().getX() + 0.5D - TileEntityRendererDispatcher.staticPlayerX;
+        double d1 = (double)tileEntity.getPos().getY() + 0.5D - TileEntityRendererDispatcher.staticPlayerY;
+        double d2 = (double)tileEntity.getPos().getZ() + 0.5D - TileEntityRendererDispatcher.staticPlayerZ;
         return d0 * d0 + d1 * d1 + d2 * d2;
     }
 }
