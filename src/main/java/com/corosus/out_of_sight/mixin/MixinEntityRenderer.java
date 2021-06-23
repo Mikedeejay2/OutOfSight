@@ -18,7 +18,6 @@ public abstract class MixinEntityRenderer {
                     target = "Lnet/minecraft/client/renderer/entity/Render;shouldRender(Lnet/minecraft/entity/Entity;Lnet/minecraft/client/renderer/culling/ICamera;DDD)Z"))
     public <T extends Entity> boolean shouldRender(Render<T> entityrenderer, T livingEntityIn, ICamera camera, double camX, double camY, double camZ) {
         if (!isInRangeToRender3d(livingEntityIn, camX, camY, camZ)) {
-            System.out.println("Out of Range shouldRender");
             return false;
         }
         return entityrenderer.shouldRender(livingEntityIn, camera, camX, camY, camZ);

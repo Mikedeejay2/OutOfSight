@@ -19,7 +19,6 @@ public abstract class MixinTileEntityRendererDispatcher {
         double dist = getDistanceSq(tileEntityIn, TileEntityRendererDispatcher.staticPlayerX, TileEntityRendererDispatcher.staticPlayerY, TileEntityRendererDispatcher.staticPlayerZ);
         if (dist > OutOfSightConfig.tileEntityRenderRangeMax * OutOfSightConfig.tileEntityRenderRangeMax) {
             if (!OutOfSightConfig.tileEntityRenderLimitModdedOnly || !OutOfSight.getCanonicalNameCached(tileEntityIn.getClass()).startsWith("net.minecraft")) {
-                System.out.println("Out of Range tileEntity");
                 return;
             }
         }

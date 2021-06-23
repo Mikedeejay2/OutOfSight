@@ -25,21 +25,9 @@ public class ConfigGui extends GuiConfig {
     }
 
     @Override
-    public void onGuiClosed()
-    {
+    public void onGuiClosed() {
         super.onGuiClosed();
         OutOfSightConfig.config.save();
         OutOfSightConfig.init(OutOfSightConfig.configFile);
-        System.out.println(String.format("Config has been reloaded. New values: \n" +
-                                             "tileEntityRenderRangeMax: %s \n" +
-                                             "entityRenderRangeMax: %s \n" +
-                                             "tileEntityRenderLimitModdedOnly: %s \n" +
-                                             "entityRenderLimitModdedOnly: %s",
-                                         OutOfSightConfig.tileEntityRenderRangeMax,
-                                         OutOfSightConfig.entityRenderRangeMax,
-                                         OutOfSightConfig.tileEntityRenderLimitModdedOnly,
-                                         OutOfSightConfig.entityRenderLimitModdedOnly));
     }
-
-
 }
