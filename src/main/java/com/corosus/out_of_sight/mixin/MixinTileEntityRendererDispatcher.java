@@ -23,7 +23,7 @@ public abstract class MixinTileEntityRendererDispatcher {
     }
 
     public boolean isInRangeToRender3d(TileEntity tileEntityIn) {
-        return getDistanceSq(tileEntityIn) <= OutOfSightConfig.tileEntityRenderRangeMaxSq ||
+        return !OutOfSightConfig.tileEntityRenderRangeEnabled || getDistanceSq(tileEntityIn) <= OutOfSightConfig.tileEntityRenderRangeMaxSq ||
             (OutOfSightConfig.tileEntityRenderLimitModdedOnly && !OutOfSight.isModded(tileEntityIn.getClass()));
     }
 
