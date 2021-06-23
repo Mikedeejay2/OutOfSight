@@ -4,24 +4,20 @@ import com.corosus.out_of_sight.OutOfSight;
 import com.corosus.out_of_sight.config.OutOfSightConfig;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(RenderManager.class)
+@Mixin(Render.class)
 public abstract class MixinEntityHandle
 {
-
-    @Redirect(method = "shouldRender",
-            at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/entity/Render;shouldRender(Lnet/minecraft/entity/Entity;Lnet/minecraft/client/renderer/culling/ICamera;DDD)Z"))
-    public <T extends Entity> boolean shouldRender(Render<T> entityrenderer, T livingEntityIn, ICamera camera, double camX, double camY, double camZ) {
-        if (!isInRangeToRender3d(livingEntityIn, camX, camY, camZ)) {
-            return false;
+    @Inject(method = "shouldRender", at = @At(value = "HEAD"), cancellable = true)
+    public <T extends Entity> void shouldRender(T livingEntity, ICamera camera, double camX, double camY, double camZ, CallbackInfoReturnable<Boolean> cir) {
+        if (!isInRangeToRender3d(livingEntity, camX, camY, camZ)) {
+            cir.cancel();
         }
-        return entityrenderer.shouldRender(livingEntityIn, camera, camX, camY, camZ);
     }
 
 

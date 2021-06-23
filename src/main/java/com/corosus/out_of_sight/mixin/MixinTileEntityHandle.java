@@ -2,25 +2,22 @@ package com.corosus.out_of_sight.mixin;
 
 import com.corosus.out_of_sight.OutOfSight;
 import com.corosus.out_of_sight.config.OutOfSightConfig;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.tileentity.TileEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(RenderGlobal.class)
+@Mixin(TileEntityRendererDispatcher.class)
 public abstract class MixinTileEntityHandle
 {
 
-    @Redirect(method = "renderEntities",
-            at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher;render(Lnet/minecraft/tileentity/TileEntity;FI)V"))
-    public void renderTileEntity(TileEntityRendererDispatcher dispatcher, TileEntity tileEntityIn, float partialTicks, int destroyStage) {
+    @Inject(method = "render(Lnet/minecraft/tileentity/TileEntity;FI)V", at = @At("HEAD"), cancellable = true)
+    public void renderTileEntity(TileEntity tileEntityIn, float partialTicks, int destroyStage, CallbackInfo ci) {
         if(!isInRangeToRender3d(tileEntityIn)) {
-            return;
+            ci.cancel();
         }
-        dispatcher.render(tileEntityIn, partialTicks, destroyStage);
     }
 
     public boolean isInRangeToRender3d(TileEntity tileEntityIn) {
