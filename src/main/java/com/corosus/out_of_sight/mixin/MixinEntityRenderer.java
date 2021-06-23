@@ -25,11 +25,14 @@ public abstract class MixinEntityRenderer {
 
 
     public <T extends Entity> boolean isInRangeToRender3d(T livingEntityIn, double x, double y, double z) {
+        return getDistanceSq(livingEntityIn, x, y, z) <= OutOfSightConfig.entityRenderRangeMax * OutOfSightConfig.entityRenderRangeMax ||
+            (OutOfSightConfig.entityRenderLimitModdedOnly && !OutOfSight.isModded(livingEntityIn.getClass()));
+    }
+
+    public <T extends Entity> double getDistanceSq(T livingEntityIn, double x, double y, double z) {
         double d0 = livingEntityIn.posX - x;
         double d1 = livingEntityIn.posY - y;
         double d2 = livingEntityIn.posZ - z;
-        double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-        return !(d3 > OutOfSightConfig.entityRenderRangeMaxSq) ||
-            (OutOfSightConfig.entityRenderLimitModdedOnly && OutOfSight.getCanonicalNameCached(livingEntityIn.getClass()).startsWith("net.minecraft"));
+        return d0 * d0 + d1 * d1 + d2 * d2;
     }
 }

@@ -23,8 +23,8 @@ public abstract class MixinTileEntityRendererDispatcher {
     }
 
     public boolean isInRangeToRender3d(TileEntity tileEntityIn) {
-        return !(getDistanceSq(tileEntityIn) > OutOfSightConfig.tileEntityRenderRangeMaxSq) ||
-            (OutOfSightConfig.tileEntityRenderLimitModdedOnly && OutOfSight.getCanonicalNameCached(tileEntityIn.getClass()).startsWith("net.minecraft"));
+        return getDistanceSq(tileEntityIn) <= OutOfSightConfig.tileEntityRenderRangeMaxSq ||
+            (OutOfSightConfig.tileEntityRenderLimitModdedOnly && !OutOfSight.isModded(tileEntityIn.getClass()));
     }
 
     public double getDistanceSq(TileEntity tileEntity) {

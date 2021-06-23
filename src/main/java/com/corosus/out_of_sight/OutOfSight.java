@@ -49,4 +49,8 @@ public class OutOfSight
         }
         return cacheClassToCanonicalName.get(clazz);
     }
+
+    public static boolean isModded(Class<?> clazz) {
+        return OutOfSight.getCanonicalNameCached(clazz).startsWith("net.minecraft");
+    }
 }
