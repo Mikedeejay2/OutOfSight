@@ -1,78 +1,88 @@
 package com.corosus.out_of_sight.config;
 
 import com.corosus.out_of_sight.OutOfSight;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Mod;
 
-import java.io.File;
-
+@Config(modid = OutOfSight.MOD_ID, category = "", name = "Out Of Sight")
 public class OutOfSightConfig {
-    public static Configuration config;
-    public static File configFile;
+    public static final ConfigOptions config = new ConfigOptions();
 
-    public static boolean tileEntityRenderRangeEnabled;
-    public static double tileEntityRenderRangeMax;
-    public static boolean tileEntityRenderLimitModdedOnly;
-    public static double tileEntityRenderRangeMaxSq;
+    public static class ConfigOptions {
+        @Config.Name("Tile Entity")
+        @Config.Comment("Tile entity settings")
+        public final TileEntity tileEntity = new TileEntity();
 
-    public static boolean entityRenderRangeEnabled;
-    public static double entityRenderRangeMax;
-    public static boolean entityRenderLimitModdedOnly;
-    public static double entityRenderRangeMaxSq;
+        public static class TileEntity {
+            @Config.Name("Tile Entity Render Range Enabled")
+            @Config.Comment("Whether tile entity range is enabled")
+            public boolean enabled = true;
 
-    public static boolean particleRenderRangeEnabled;
-    public static double particleRenderRangeMax;
-    public static boolean particleRenderLimitModdedOnly;
-    public static double particleRenderRangeMaxSq;
+            @Config.Name("Tile Entity Render Range Max")
+            @Config.Comment("The maximum range that a tile entity is rendered")
+            @Config.RangeDouble(min = 1, max = 30000)
+            public double rangeMax = 24;
 
-    public static void init(File file) {
-        config = new Configuration(file);
+            @Config.Name("Tile Entity Render Limit Modded Only")
+            @Config.Comment("Whether the tile entity render limit should be limited to modded")
+            public boolean moddedOnly = true;
 
-        String category = "general";
-        config.addCustomCategoryComment(category, "General mod settings");
+            // Internal
+            @Config.Ignore
+            public double rangeMaxSQ = -1;
+        }
 
-        tileEntityRenderRangeEnabled = config.getBoolean(
-            "tileEntityRenderRangeEnabled", category, true,
-            "Whether tile entity range is enabled");
-        tileEntityRenderRangeMax = config.getFloat(
-            "tileEntityRenderRangeMax", category, 24, 1, 30000,
-            "The maximum range that a tile entity is rendered");
-        tileEntityRenderLimitModdedOnly = config.getBoolean(
-            "tileEntityRenderLimitModdedOnly", category, true,
-            "Whether the tile entity render limit should be limited to modded");
-        tileEntityRenderRangeMaxSq = tileEntityRenderRangeMax * tileEntityRenderRangeMax;
+        public final Entity entity = new Entity();
 
-        entityRenderRangeEnabled = config.getBoolean(
-            "entityRenderRangeEnabled", category, true,
-            "Whether entity range is enabled");
-        entityRenderRangeMax = config.getFloat(
-            "entityRenderRangeMax", category, 64, 1, 30000,
-            "The maximum range that an entity is rendered");
-        entityRenderLimitModdedOnly = config.getBoolean(
-            "entityRenderLimitModdedOnly", category, true,
-            "Whether the entity render limit should be limited to modded");
-        entityRenderRangeMaxSq = entityRenderRangeMax * entityRenderRangeMax;
+        public static class Entity {
+            @Config.Name("Entity Render Range Enabled")
+            @Config.Comment("Whether entity range is enabled")
+            public boolean enabled = true;
 
-        particleRenderRangeEnabled = config.getBoolean(
-            "particleRenderRangeEnabled", category, false,
-            "Whether particle range is enabled");
-        particleRenderRangeMax = config.getFloat(
-            "particleRenderRangeMax", category, 24, 1, 30000,
-            "The maximum range that a particle is rendered");
-        particleRenderLimitModdedOnly = config.getBoolean(
-            "particleRenderLimitModdedOnly", category, true,
-            "Whether the particle render limit should be limited to modded");
-        particleRenderRangeMaxSq = particleRenderRangeMax * particleRenderRangeMax;
+            @Config.Name("Entity Render Range Max")
+            @Config.Comment("The maximum range that an entity is rendered")
+            @Config.RangeDouble(min = 1, max = 30000)
+            public double rangeMax = 64;
 
-        config.save();
+            @Config.Name("Entity Render Limit Modded Only")
+            @Config.Comment("Whether the entity render limit should be limited to modded")
+            public boolean moddedOnly = true;
+
+            // Internal
+            @Config.Ignore
+            public double rangeMaxSQ = -1;
+        }
+
+        public final Particle particle = new Particle();
+
+        public static class Particle {
+            @Config.Name("Particle Render Range Enabled")
+            @Config.Comment("Whether particle range is enabled")
+            public boolean enabled = true;
+
+            @Config.Name("Particle Render Range Max")
+            @Config.Comment("The maximum range that a particle is rendered")
+            @Config.RangeDouble(min = 1, max = 30000)
+            public double rangeMax = 64;
+
+            @Config.Name("Particle Render Limit Modded Only")
+            @Config.Comment("Whether the particle render limit should be limited to modded")
+            public boolean moddedOnly = true;
+
+            // Internal
+            @Config.Ignore
+            public double rangeMaxSQ = -1;
+        }
     }
 
-    public static void registerConfig(FMLPreInitializationEvent event) {
-        configFile = new File(event.getModConfigurationDirectory(), OutOfSight.MOD_ID + ".cfg");
-        init(configFile);
-    }
-
-    public static void reloadConfig() {
-        init(configFile);
+    @Mod.EventBusSubscriber(modid = OutOfSight.MOD_ID)
+    private static class EventHandler {
+        public static void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
+            if(event.getModID().equals(OutOfSight.MOD_ID)) {
+                ConfigManager.sync(OutOfSight.MOD_ID, Config.Type.INSTANCE);
+            }
+        }
     }
 }

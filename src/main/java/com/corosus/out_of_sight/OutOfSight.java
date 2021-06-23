@@ -13,8 +13,7 @@ import java.util.HashMap;
 @Mod(
     modid = OutOfSight.MOD_ID,
     name = OutOfSight.MOD_NAME,
-    version = OutOfSight.VERSION,
-    guiFactory = "com.corosus.out_of_sight.config.ConfigGuiFactory"
+    version = OutOfSight.VERSION
 )
 public class OutOfSight
 {
@@ -35,12 +34,12 @@ public class OutOfSight
 
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
-        OutOfSightConfig.registerConfig(event);
+        System.out.println("Test1: " + OutOfSightConfig.config.tileEntity.rangeMax);
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-
+        System.out.println("Test2: " + OutOfSightConfig.config.tileEntity.rangeMax);
     }
 
     public static String getCanonicalNameCached(Class<?> clazz) {

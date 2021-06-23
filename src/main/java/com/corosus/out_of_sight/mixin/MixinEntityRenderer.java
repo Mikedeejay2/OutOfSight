@@ -25,8 +25,8 @@ public abstract class MixinEntityRenderer {
 
 
     public <T extends Entity> boolean isInRangeToRender3d(T livingEntityIn, double x, double y, double z) {
-        return !OutOfSightConfig.entityRenderRangeEnabled || getDistanceSq(livingEntityIn, x, y, z) <= OutOfSightConfig.entityRenderRangeMaxSq ||
-            (OutOfSightConfig.entityRenderLimitModdedOnly && !OutOfSight.isModded(livingEntityIn.getClass()));
+        return !OutOfSightConfig.config.entity.enabled || getDistanceSq(livingEntityIn, x, y, z) <= OutOfSightConfig.config.entity.rangeMaxSQ ||
+            (OutOfSightConfig.config.entity.moddedOnly && !OutOfSight.isModded(livingEntityIn.getClass()));
     }
 
     public <T extends Entity> double getDistanceSq(T livingEntityIn, double x, double y, double z) {
