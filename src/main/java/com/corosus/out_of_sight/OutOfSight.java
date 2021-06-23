@@ -1,47 +1,49 @@
 package com.corosus.out_of_sight;
 
-import com.corosus.out_of_sight.config.Config;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.ModLoadingContext;
+import com.corosus.out_of_sight.config.OutOfSightConfig;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 
 
-@Mod(OutOfSight.MODID)
+@Mod(
+    modid = OutOfSight.MOD_ID,
+    name = OutOfSight.MOD_NAME,
+    version = OutOfSight.VERSION,
+    guiFactory = "com.corosus.out_of_sight.config.ConfigGuiFactory"
+)
 public class OutOfSight
 {
     public static final Logger LOGGER = LogManager.getLogger();
 
-    public static final String MODID = "out_of_sight";
+    public static final String MOD_ID = "out_of_sight";
+    public static final String MOD_NAME = "Out Of Sight";
+    public static final String VERSION = "1.0.1";
 
-    public static HashMap<Class, String> cacheClassToCanonicalName = new HashMap<>();
+    @Mod.Instance(MOD_ID)
+    public static OutOfSight INSTANCE;
+
+    public static HashMap<Class<?>, String> cacheClassToCanonicalName = new HashMap<>();
 
     public OutOfSight() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-
-        MinecraftForge.EVENT_BUS.register(new EventHandlerForge());
-
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
-    }
-
-    private void setup(final FMLCommonSetupEvent event)
-    {
 
     }
 
-    private void doClientStuff(final FMLClientSetupEvent event) {
+    @Mod.EventHandler
+    public void preinit(FMLPreInitializationEvent event) {
+        OutOfSightConfig.registerConfig(event);
+    }
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
 
     }
 
-    public static String getCanonicalNameCached(Class clazz) {
+    public static String getCanonicalNameCached(Class<?> clazz) {
         if (!cacheClassToCanonicalName.containsKey(clazz)) {
             cacheClassToCanonicalName.put(clazz, clazz.getCanonicalName());
         }

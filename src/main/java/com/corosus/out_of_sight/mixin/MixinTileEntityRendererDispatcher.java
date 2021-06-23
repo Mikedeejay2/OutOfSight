@@ -1,30 +1,29 @@
 package com.corosus.out_of_sight.mixin;
 
 import com.corosus.out_of_sight.OutOfSight;
-import com.corosus.out_of_sight.config.Config;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.WorldRenderer;
+import com.corosus.out_of_sight.config.OutOfSightConfig;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.tileentity.TileEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(WorldRenderer.class)
+@Mixin(RenderGlobal.class)
 public abstract class MixinTileEntityRendererDispatcher {
 
-    @Redirect(method = "updateCameraAndRender",
+    @Redirect(method = "renderEntities",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher;renderTileEntity(Lnet/minecraft/tileentity/TileEntity;FLcom/mojang/blaze3d/matrix/MatrixStack;Lnet/minecraft/client/renderer/IRenderTypeBuffer;)V"))
-    public <E extends TileEntity> void renderTileEntity(TileEntityRendererDispatcher dispatcher, E tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn) {
-        double dist = getDistanceSq(tileEntityIn, dispatcher.renderInfo.getProjectedView().x, dispatcher.renderInfo.getProjectedView().y, dispatcher.renderInfo.getProjectedView().z);
-        if (dist > Config.GENERAL.tileEntityRenderRangeMax.get() * Config.GENERAL.tileEntityRenderRangeMax.get()) {
-            if (!Config.GENERAL.tileEntityRenderLimitModdedOnly.get() || !OutOfSight.getCanonicalNameCached(tileEntityIn.getClass()).startsWith("net.minecraft")) {
+                    target = "Lnet/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher;render(Lnet/minecraft/tileentity/TileEntity;FI)V"))
+    public void renderTileEntity(TileEntityRendererDispatcher dispatcher, TileEntity tileEntityIn, float partialTicks, int destroyStage) {
+        double dist = getDistanceSq(tileEntityIn, TileEntityRendererDispatcher.staticPlayerX, TileEntityRendererDispatcher.staticPlayerY, TileEntityRendererDispatcher.staticPlayerZ);
+        if (dist > OutOfSightConfig.tileEntityRenderRangeMax * OutOfSightConfig.tileEntityRenderRangeMax) {
+            if (!OutOfSightConfig.tileEntityRenderLimitModdedOnly || !OutOfSight.getCanonicalNameCached(tileEntityIn.getClass()).startsWith("net.minecraft")) {
+                System.out.println("Out of Range tileEntity");
                 return;
             }
         }
-        dispatcher.renderTileEntity(tileEntityIn, partialTicks, matrixStackIn, bufferIn);
+        dispatcher.render(tileEntityIn, partialTicks, destroyStage);
     }
 
     public double getDistanceSq(TileEntity tileEntity, double x, double y, double z) {

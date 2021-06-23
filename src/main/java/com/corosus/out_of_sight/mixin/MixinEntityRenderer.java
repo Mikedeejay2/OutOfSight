@@ -1,35 +1,37 @@
 package com.corosus.out_of_sight.mixin;
 
 import com.corosus.out_of_sight.OutOfSight;
-import com.corosus.out_of_sight.config.Config;
-import net.minecraft.client.renderer.culling.ClippingHelper;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.corosus.out_of_sight.config.OutOfSightConfig;
+import net.minecraft.client.renderer.culling.ICamera;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(EntityRendererManager.class)
+@Mixin(RenderManager.class)
 public abstract class MixinEntityRenderer {
 
     @Redirect(method = "shouldRender",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/entity/EntityRenderer;shouldRender(Lnet/minecraft/entity/Entity;Lnet/minecraft/client/renderer/culling/ClippingHelper;DDD)Z"))
-    public <T extends Entity> boolean shouldRender(EntityRenderer<? super T> entityrenderer, T livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {
+                    target = "Lnet/minecraft/client/renderer/entity/Render;shouldRender(Lnet/minecraft/entity/Entity;Lnet/minecraft/client/renderer/culling/ICamera;DDD)Z"))
+    public <T extends Entity> boolean shouldRender(Render<T> entityrenderer, T livingEntityIn, ICamera camera, double camX, double camY, double camZ) {
         if (!isInRangeToRender3d(livingEntityIn, camX, camY, camZ)) {
+            System.out.println("Out of Range shouldRender");
             return false;
         }
         return entityrenderer.shouldRender(livingEntityIn, camera, camX, camY, camZ);
     }
 
+
     public <T extends Entity> boolean isInRangeToRender3d(T livingEntityIn, double x, double y, double z) {
-        double d0 = livingEntityIn.getPosX() - x;
-        double d1 = livingEntityIn.getPosY() - y;
-        double d2 = livingEntityIn.getPosZ() - z;
+        double d0 = livingEntityIn.posX - x;
+        double d1 = livingEntityIn.posY - y;
+        double d2 = livingEntityIn.posZ - z;
         double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-        if (d3 > Config.GENERAL.entityRenderRangeMax.get() * Config.GENERAL.entityRenderRangeMax.get()) {
-            if (!Config.GENERAL.entityRenderLimitModdedOnly.get() || !OutOfSight.getCanonicalNameCached(livingEntityIn.getClass()).startsWith("net.minecraft")) {
+        if (d3 > OutOfSightConfig.entityRenderRangeMax * OutOfSightConfig.entityRenderRangeMax) {
+            if(!OutOfSightConfig.entityRenderLimitModdedOnly || !OutOfSight.getCanonicalNameCached(livingEntityIn.getClass()).startsWith("net.minecraft")) {
                 return false;
             }
         }

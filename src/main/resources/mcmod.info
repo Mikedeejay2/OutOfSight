@@ -1,0 +1,13 @@
+[
+  {
+    "modid": "out_of_sight",
+    "name": "Out Of Sight",
+    "description": "Helps improve frame rates by limiting how far away tile entities and entities can render, with configurable ranges.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "authorList": [
+      "Corosus (Original author)",
+      "Mikedeejay2 (Port to 1.12)"
+    ]
+  }
+]

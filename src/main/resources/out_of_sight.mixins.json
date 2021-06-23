@@ -3,8 +3,10 @@
   "package": "com.corosus.out_of_sight.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "out_of_sight.refmap.json",
-  "client": ["MixinTileEntityRendererDispatcher",
-    "MixinEntityRenderer"],
+  "client": [
+    "MixinTileEntityRendererDispatcher",
+    "MixinEntityRenderer"
+  ],
   "injectors": {
     "defaultRequire": 1
   },
