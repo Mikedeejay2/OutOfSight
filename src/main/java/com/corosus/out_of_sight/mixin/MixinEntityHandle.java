@@ -11,7 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(RenderManager.class)
-public abstract class MixinEntityRenderer {
+public abstract class MixinEntityHandle
+{
 
     @Redirect(method = "shouldRender",
             at = @At(value = "INVOKE",

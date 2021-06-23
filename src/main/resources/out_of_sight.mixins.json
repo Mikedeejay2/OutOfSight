@@ -4,9 +4,9 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "out_of_sight.refmap.json",
   "client": [
-    "MixinEntityRenderer",
-    "MixinTileEntityRendererDispatcher",
-    "MixinParticleManager"
+    "MixinEntityHandle",
+    "MixinTileEntityHandle",
+    "MixinParticleHandle"
   ],
   "injectors": {
     "defaultRequire": 1

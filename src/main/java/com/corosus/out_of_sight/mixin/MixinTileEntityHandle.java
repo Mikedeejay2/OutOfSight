@@ -10,7 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(RenderGlobal.class)
-public abstract class MixinTileEntityRendererDispatcher {
+public abstract class MixinTileEntityHandle
+{
 
     @Redirect(method = "renderEntities",
             at = @At(value = "INVOKE",

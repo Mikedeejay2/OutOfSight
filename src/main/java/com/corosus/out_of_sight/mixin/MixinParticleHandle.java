@@ -14,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(RenderGlobal.class)
-public abstract class MixinParticleManager {
+public abstract class MixinParticleHandle
+{
     @Shadow
     @Final
     private Minecraft mc;
