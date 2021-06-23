@@ -29,11 +29,7 @@ public abstract class MixinEntityRenderer {
         double d1 = livingEntityIn.posY - y;
         double d2 = livingEntityIn.posZ - z;
         double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-        if (d3 > OutOfSightConfig.entityRenderRangeMax * OutOfSightConfig.entityRenderRangeMax) {
-            if(!OutOfSightConfig.entityRenderLimitModdedOnly || !OutOfSight.getCanonicalNameCached(livingEntityIn.getClass()).startsWith("net.minecraft")) {
-                return false;
-            }
-        }
-        return true;
+        return !(d3 > OutOfSightConfig.entityRenderRangeMax * OutOfSightConfig.entityRenderRangeMax) ||
+            (OutOfSightConfig.entityRenderLimitModdedOnly && OutOfSight.getCanonicalNameCached(livingEntityIn.getClass()).startsWith("net.minecraft"));
     }
 }
