@@ -33,7 +33,7 @@ public abstract class MixinParticleHandle
      */
     @Nullable
     @Overwrite
-    private Particle spawnParticle0(int particleID, boolean ignoreRange, boolean minParticles, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters) {
+    public Particle spawnParticle0(int particleID, boolean ignoreRange, boolean minParticles, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters) {
         Entity entity = this.mc.getRenderViewEntity();
         if (this.mc != null && entity != null && this.mc.effectRenderer != null)
         {
