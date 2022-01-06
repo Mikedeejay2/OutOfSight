@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 @Mod(
@@ -26,7 +27,7 @@ public class OutOfSight
     @Mod.Instance(MOD_ID)
     public static OutOfSight INSTANCE;
 
-    public static HashMap<Class<?>, String> cacheClassToCanonicalName = new HashMap<>();
+    public static Map<Class<?>, Boolean> cacheClassToModdedState = new HashMap<>();
 
     public OutOfSight() {
 
@@ -41,14 +42,10 @@ public class OutOfSight
     public void init(FMLInitializationEvent event) {
     }
 
-    public static String getCanonicalNameCached(Class<?> clazz) {
-        if (!cacheClassToCanonicalName.containsKey(clazz)) {
-            cacheClassToCanonicalName.put(clazz, clazz.getCanonicalName());
+    public static Boolean isModded(Class<?> clazz) {
+        if (!cacheClassToModdedState.containsKey(clazz)) {
+            cacheClassToModdedState.put(clazz, !clazz.getCanonicalName().startsWith("net.minecraft"));
         }
-        return cacheClassToCanonicalName.get(clazz);
-    }
-
-    public static boolean isModded(Class<?> clazz) {
-        return !OutOfSight.getCanonicalNameCached(clazz).startsWith("net.minecraft");
+        return cacheClassToModdedState.get(clazz);
     }
 }
