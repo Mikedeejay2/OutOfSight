@@ -1,6 +1,5 @@
 package com.corosus.out_of_sight.core;
 
-import com.corosus.out_of_sight.OutOfSight;
 import net.minecraftforge.fml.relauncher.CoreModManager;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.apache.logging.log4j.LogManager;
