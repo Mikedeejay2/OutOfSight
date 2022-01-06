@@ -35,40 +35,38 @@ public abstract class MixinParticleHandle
     @Overwrite
     public Particle spawnParticle0(int particleID, boolean ignoreRange, boolean minParticles, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters) {
         Entity entity = this.mc.getRenderViewEntity();
-        if (this.mc != null && entity != null && this.mc.effectRenderer != null)
-        {
-            int particleLevel = calculateParticleLevel(minParticles);
-            double d3 = entity.posX - xCoord;
-            double d4 = entity.posY - yCoord;
-            double d5 = entity.posZ - zCoord;
+        if(this.mc == null || entity == null || this.mc.effectRenderer == null) return null;
+//            OutOfSightConfig.particle.moddedOnly && !OutOfSight.isModded(entityIn.getClass())
+        int particleLevel = calculateParticleLevel(minParticles);
+        double d3 = entity.posX - xCoord;
+        double d4 = entity.posY - yCoord;
+        double d5 = entity.posZ - zCoord;
 
-            if(ignoreRange) {
-                if(OutOfSightConfig.particle.enabled && !isInRangeToRender3dForced(entity, xCoord, yCoord, zCoord)) {
-                    return null;
-                }
-                return mc.effectRenderer.spawnEffectParticle(particleID, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
-            }
-            else if(OutOfSightConfig.particle.enabled) {
-                if(!isInRangeToRender3d(entity, xCoord, yCoord, zCoord)) {
-                    return null;
-                }
-            }
-            else if(d3 * d3 + d4 * d4 + d5 * d5 > 1024.0D) {
+        if(ignoreRange) {
+            if(OutOfSightConfig.particle.enabled && !isInRangeToRender3dForced(entity, xCoord, yCoord, zCoord)) {
                 return null;
             }
-            return particleLevel > 1 ? null : mc.effectRenderer.spawnEffectParticle(particleID, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
+            return mc.effectRenderer.spawnEffectParticle(particleID, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
         }
-        return null;
+        else if(OutOfSightConfig.particle.enabled) {
+            if(!isInRangeToRender3d(entity, xCoord, yCoord, zCoord)) {
+                return null;
+            }
+        }
+        else if(d3 * d3 + d4 * d4 + d5 * d5 > 1024.0D) {
+            return null;
+        }
+        return particleLevel > 1 ? null : mc.effectRenderer.spawnEffectParticle(particleID, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
     }
 
     public boolean isInRangeToRender3d(Entity entityIn, double x, double y, double z) {
-        return getDistanceSq(entityIn, x, y, z) <= OutOfSightConfig.particle.rangeMaxSQ ||
-            (OutOfSightConfig.particle.moddedOnly && !OutOfSight.isModded(entityIn.getClass()));
+        return getDistanceSq(entityIn, x, y, z) <= OutOfSightConfig.particle.rangeMaxSQ &&
+            (!OutOfSightConfig.particle.moddedOnly || !OutOfSight.isModded(entityIn.getClass()));
     }
 
     public boolean isInRangeToRender3dForced(Entity entityIn, double x, double y, double z) {
-        return OutOfSightConfig.particle.forcedIgnored || getDistanceSq(entityIn, x, y, z) <= OutOfSightConfig.particle.forcedRangeMaxSq ||
-            (OutOfSightConfig.particle.moddedOnly && !OutOfSight.isModded(entityIn.getClass()));
+        return OutOfSightConfig.particle.forcedIgnored || getDistanceSq(entityIn, x, y, z) <= OutOfSightConfig.particle.forcedRangeMaxSq &&
+            (!OutOfSightConfig.particle.moddedOnly || !OutOfSight.isModded(entityIn.getClass()));
     }
 
     public double getDistanceSq(Entity livingEntityIn, double x, double y, double z) {
