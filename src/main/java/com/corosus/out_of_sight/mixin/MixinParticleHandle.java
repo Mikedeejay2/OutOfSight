@@ -31,7 +31,6 @@ public abstract class MixinParticleHandle
     public Particle spawnParticle0(int particleID, boolean ignoreRange, boolean minParticles, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters) {
         Entity entity = this.mc.getRenderViewEntity();
         if(this.mc == null || entity == null || this.mc.effectRenderer == null) return null;
-//            OutOfSightConfig.particle.moddedOnly && !OutOfSight.isModded(entityIn.getClass())
         int particleLevel = calculateParticleLevel(minParticles);
         double d3 = entity.posX - xCoord;
         double d4 = entity.posY - yCoord;
